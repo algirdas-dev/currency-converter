@@ -1,0 +1,31 @@
+<h2>{{currency?.disclaimer}}</h2>
+<form class="col-md-6 col-sm-8 currency-form">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">{{currency?.chartName}}</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control"  name="CurrencyCount" [(ngModel)]="currencyCount"/>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Convert to</label>
+        <div class="col-sm-10">
+            <ng-multiselect-dropdown
+                name="BpiSelect"
+                [placeholder]="'custom placeholder'"
+                [data]="bpiList"
+                [(ngModel)]="selectedBpiCodeList"
+                [settings]="dropdownSettingsBpi"
+                (onSelect)="onItemSelectBpi($event)"
+                (onSelectAll)="onSelectAllBpi($event)"
+                >
+            </ng-multiselect-dropdown>
+        </div>
+    </div>
+   <div *ngFor="let bpi of bpiList | containsCodes : selectedBpiCodeList" class="form-group row result-row">
+        <label [title]="bpi.description" class="col-sm-2 col-form-label">{{bpi.code}}</label>
+        <div class="col-sm-10">
+            <input class="form-control" value="{{toLocaleCurrency(bpi.rate_float * currencyCount,bpi.code)}}" readonly/>
+            <i (click)="removeBpi(bpi.code)" class="icon-close"></i>
+        </div>
+   </div>
+</form>
